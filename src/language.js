@@ -1,4 +1,5 @@
 import {createContext,createElement,useContext,useEffect,useMemo,useState} from 'react';
+import {useLocation} from 'react-router-dom';
 
 const translations = {
   'Home':'Accueil','About':'À propos','About Us':'À propos de nous','About the Company':'À propos de l’entreprise','Company':'Entreprise','Projects':'Projets','Project':'Projet','Our Team':'Notre équipe','Team':'Équipe','Careers':'Carrières','Blog':'Blog','Contact':'Contact','Contact Us':'Nous contacter','Services':'Services','Products':'Produits','Industries':'Secteurs','Why choose us':'Pourquoi nous choisir','FAQ':'FAQ','Testimonials':'Témoignages','Privacy':'Confidentialité','Terms':'Conditions','Legal':'Juridique','Request a Quote':'Demander un devis','Request Quote':'Demander un devis','Request a quote':'Demander un devis','View Our Projects':'Voir nos projets','View All Services':'Voir tous les services','Explore Projects':'Découvrir les projets','About Us':'À propos de nous','Learn Why':'Pourquoi nous choisir','Chat on WhatsApp':'Discuter sur WhatsApp','Ask on WhatsApp':'Demander sur WhatsApp','Start a conversation':'Entamons une conversation','Send Enquiry':'Envoyer la demande','Send another':'Envoyer une autre demande','Submit another request':'Envoyer une autre demande','Submit Application':'Envoyer la candidature','Read article →':'Lire l’article →','View project →':'Voir le projet →','View supply →':'Voir le produit →','Explore service →':'Découvrir le service →','Back to Home':'Retour à l’accueil','LinkedIn →':'LinkedIn →',
@@ -52,14 +53,12 @@ const LanguageContext = createContext(null);
 export function LanguageProvider({children}){
   const [language,setLanguage] = useState(()=>window.localStorage.getItem('cam-language') || 'en');
   const value = useMemo(()=>({language,toggleLanguage:()=>setLanguage((current)=>current === 'en' ? 'fr' : 'en')}),[language]);
+  const {pathname} = useLocation();
   useEffect(()=>{
     document.documentElement.dataset.language = language;
     window.localStorage.setItem('cam-language',language);
     translateDocument(language);
-    const observer = new MutationObserver(()=>translateDocument(language));
-    observer.observe(document.body,{subtree:true,childList:true,characterData:true});
-    return ()=>observer.disconnect();
-  },[language]);
+  },[language,pathname]);
   return createElement(LanguageContext.Provider,{value},children);
 }
 export function useLanguage(){return useContext(LanguageContext);}
