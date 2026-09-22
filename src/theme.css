@@ -68,6 +68,35 @@ body {
   animation: brand-3d-rotate 2.8s cubic-bezier(.22, 1, .36, 1) 1 both;
 }
 
+.menu-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.menu-btn span {
+  width: 22px;
+  height: 2px;
+  margin: 0;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+.menu-btn:hover,
+.menu-btn:focus-visible {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
 @keyframes brand-arrival {
   from { opacity: 0; transform: translate3d(-18px, 0, 0) scale(.9) rotateY(-8deg); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotateY(0); }
@@ -615,6 +644,99 @@ body {
 }
 
 @media (max-width: 760px) {
+  .nav-wrap {
+    min-height: 76px;
+    position: relative;
+  }
+
+  .brand {
+    width: min(190px, calc(100vw - 100px));
+  }
+
+  .brand img {
+    width: 100%;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    flex: 0 0 44px;
+    position: relative;
+    z-index: 110;
+  }
+
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: none;
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+    padding: 10px 4% 18px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 14px 30px rgba(13, 27, 42, .14);
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav-list {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .nav-item > .nav-link {
+    display: flex;
+    width: 100%;
+    padding: 14px 4px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-dropdown {
+    position: static;
+    min-width: 0;
+    transform: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0 0 8px 12px;
+  }
+
+  .nav-item:hover > .nav-dropdown,
+  .nav-item:focus-within > .nav-dropdown,
+  .nav-item.active > .nav-dropdown,
+  .nav-dropdown.show {
+    transform: none;
+  }
+
+  .nav-dropdown-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-dropdown a {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .nav .nav-cta {
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .theme-toggle,
+  .language-toggle {
+    align-self: stretch;
+    min-height: 42px;
+    margin-top: 8px;
+  }
+
   .project-manager-grid {
     grid-template-columns: 1fr;
     gap: 32px;
