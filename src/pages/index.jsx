@@ -12,6 +12,7 @@ import {SectionHeading, Button, WhatsAppButton, CTA, Breadcrumbs, Status} from '
 import {ServiceCard, ProjectCard, ProductCard, TestimonialCard} from '../components/Cards';
 import {ContactForm, QuoteForm, CareerForm} from '../components/Forms';
 import SEO, {orgSchema} from '../components/SEO';
+import {useProjectCatalog} from '../projectStore.jsx';
 
 const industries = [
   'Residential',
@@ -143,7 +144,7 @@ export function Home() {
           <SectionHeading eyebrow="Our team" title="People behind the work" text="Experienced professionals focused on site efficiency, quality control and client communication." />
           <div className="grid-3">
             {team.slice(0, 3).map((member) => (
-              <article className="team-card" key={member.name} style={{boxShadow:'0 18px 45px rgba(13,27,42,0.08)', border:'1px solid #e5eaf0', borderRadius:'18px', overflow:'hidden'}}>
+              <article className="team-card" key={member.name}>
                 <img src={member.image} alt={member.name} style={{filter:'grayscale(100%) contrast(1.08)', width:'100%', height:'260px', objectFit:'cover', display:'block'}} />
                 <div style={{padding:'22px 20px 18px'}}>
                   <h2>{member.name}</h2>
@@ -281,6 +282,7 @@ export function ServiceDetail() {
 }
 
 export function Projects() {
+  const {projects} = useProjectCatalog();
   const [cat, setCat] = useState('All');
   const cats = ['All', ...new Set(projects.map((project) => project.category))];
 
@@ -309,6 +311,7 @@ export function Projects() {
 
 export function ProjectDetail() {
   const {slug} = useParams();
+  const {projects} = useProjectCatalog();
   const project = projects.find((item) => item.slug === slug);
 
   if (!project) return <NotFound />;
@@ -324,6 +327,34 @@ export function ProjectDetail() {
           <div><span>Location</span><b>{project.location}</b></div>
           <div><span>Client</span><b>{project.client}</b></div>
           <div><span>Status</span><b>{project.status}</b></div>
+        </div>
+      </section>
+      <section className="section">
+        <div className="container narrow project-timeline">
+          <SectionHeading eyebrow="Project journal" title="Progress from site to handover" text="Follow the project story in date order, from the first site activity to completion." />
+          <div className="timeline-list">
+            <article className="timeline-entry timeline-start">
+              <span className="muted">{project.createdAt || 'Project record'}</span>
+              <h3>Project started</h3>
+              <p>{project.description}</p>
+            </article>
+            {[...(project.updates || [])].sort((first,second) => first.date.localeCompare(second.date)).map((update) => (
+              <article className="timeline-entry" key={update.id}>
+                <span className="muted">{update.date}</span>
+                <h3>{update.title}</h3>
+                <p>{update.notes}</p>
+                {update.files?.length > 0 && <div className="timeline-media">{update.files.filter((file) => file.startsWith('data:image')).map((file) => <img key={file} src={file} alt={update.title} loading="lazy" />)}</div>}
+              </article>
+            ))}
+            {project.updates?.length === 0 && <p className="timeline-empty">No progress updates have been posted yet. The project team can add the first site update from the project publishing workspace.</p>}
+            {project.status === 'Completed' && (
+              <article className="timeline-entry timeline-complete">
+                <span className="muted">Current status</span>
+                <h3>Project completed</h3>
+                <p>{project.results}</p>
+              </article>
+            )}
+          </div>
         </div>
       </section>
       <section className="section alt">
@@ -479,7 +510,7 @@ export function Team() {
       <section className="section">
         <div className="container grid-3">
           {team.map((member) => (
-            <article className="team-card" key={member.name} style={{boxShadow:'0 18px 45px rgba(13,27,42,0.08)', border:'1px solid #e5eaf0', borderRadius:'18px', overflow:'hidden'}}>
+            <article className="team-card" key={member.name}>
               <img src={member.image} alt={member.name} style={{filter:'grayscale(100%) contrast(1.08)', width:'100%', height:'290px', objectFit:'cover', display:'block'}} />
               <div style={{padding:'22px 20px 18px'}}>
                 <h2>{member.name}</h2>

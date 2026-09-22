@@ -1,7 +1,7 @@
 import { images } from '../config/images';
 export const team = [
   {
-    name: 'Amambua Anthony',
+    name: 'Engr. Amambua Anthony',
     position: 'Managing Director',
     image: images.teamLead,
     bio: 'Leads the company vision, client relationships and overall project strategy with a focus on quality and accountability.',

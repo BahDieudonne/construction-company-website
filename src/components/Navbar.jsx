@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import {company} from '../config/company';
+import {useLanguage} from '../language';
 
 const navItems = [
   {
@@ -40,6 +41,7 @@ const navItems = [
       { to: '/projects', label: 'Portfolio', featured: true },
       { to: '/projects/commercial-buildings', label: 'Commercial work', featured: false },
       { to: '/projects/infrastructure', label: 'Infrastructure', featured: false },
+      { to: '/project-manager', label: 'Publish project update', featured: false },
       { to: '/products', label: 'Construction supplies', featured: false }
     ]
   },
@@ -65,9 +67,10 @@ const navItems = [
   }
 ];
 
-export default function Navbar() {
+export default function Navbar({theme,onToggleTheme}) {
   const [open, setOpen] = useState(false);
   const [openItem, setOpenItem] = useState(null);
+  const {language,toggleLanguage} = useLanguage();
 
   return (
     <header className="site-header">
@@ -119,6 +122,25 @@ export default function Navbar() {
           <Link className="nav-cta" to="/request-quote" onClick={() => setOpen(false)}>
             Request a Quote
           </Link>
+
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={onToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            <span className="theme-icon" aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
+          </button>
+          <button
+            className="language-toggle"
+            type="button"
+            onClick={toggleLanguage}
+            aria-label={language === 'en' ? 'Passer au français' : 'Switch to English'}
+            title={language === 'en' ? 'Passer au français' : 'Switch to English'}
+          >
+            {language === 'en' ? 'FR' : 'EN'}
+          </button>
         </nav>
 
         <button className="menu-btn" aria-label="Toggle navigation" aria-expanded={open} onClick={() => setOpen(!open)}>
