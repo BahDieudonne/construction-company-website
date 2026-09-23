@@ -97,6 +97,10 @@ body {
   border-color: var(--orange);
 }
 
+.nav-submenu-toggle {
+  display: none;
+}
+
 @keyframes brand-arrival {
   from { opacity: 0; transform: translate3d(-18px, 0, 0) scale(.9) rotateY(-8deg); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotateY(0); }
@@ -696,6 +700,38 @@ body {
     padding: 14px 4px;
     font-size: 13px;
     border-bottom: 1px solid var(--border);
+  }
+
+  .nav-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    align-items: center;
+  }
+
+  .nav-submenu-toggle {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    justify-self: end;
+    padding: 0;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .nav-submenu-toggle:hover,
+  .nav-submenu-toggle:focus-visible {
+    color: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .nav-item.active .nav-submenu-toggle span {
+    transform: rotate(45deg);
   }
 
   .nav-dropdown {

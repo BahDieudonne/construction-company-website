@@ -85,10 +85,6 @@ export default function Navbar({theme,onToggleTheme}) {
               <li
                 key={item.to}
                 className={`nav-item ${openItem === item.to ? 'active' : ''}`}
-                onMouseEnter={() => setOpenItem(item.to)}
-                onMouseLeave={() => setOpenItem(null)}
-                onFocus={() => setOpenItem(item.to)}
-                onBlur={() => setOpenItem(null)}
               >
                 <NavLink
                   to={item.to}
@@ -98,6 +94,18 @@ export default function Navbar({theme,onToggleTheme}) {
                 >
                   {item.label}
                 </NavLink>
+
+                  {item.dropdown && (
+                    <button
+                      className="nav-submenu-toggle"
+                      type="button"
+                      aria-label={`${openItem === item.to ? 'Hide' : 'Show'} ${item.label} submenu`}
+                      aria-expanded={openItem === item.to}
+                      onClick={() => setOpenItem(openItem === item.to ? null : item.to)}
+                    >
+                      <span aria-hidden="true">+</span>
+                    </button>
+                  )}
 
                 {item.dropdown && (
                   <div className={`nav-dropdown ${openItem === item.to ? 'show' : ''}`}>
